@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Suivi de Colis - Notre Entreprise</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            overflow: hidden;
+        }
+
+        .header {
+            background: #2c3e50;
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .tracking-form {
+            padding: 40px;
+        }
+
+        .input-group {
+            margin-bottom: 30px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        .input-group input:focus {
+            border-color: #3498db;
+            outline: none;
+        }
+
+        .btn {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            width: 100%;
+            transition: background 0.3s;
+        }
+
+        .btn:hover {
+            background: #2980b9;
+        }
+
+        .result {
+            margin-top: 30px;
+            padding: 20px;
+            border-radius: 8px;
+            display: none;
+        }
+
+        .tracking-info {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+
+        .status {
+            font-size: 1.2em;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .progress-bar {
+            height: 10px;
+            background: #ecf0f1;
+            border-radius: 5px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+
+        .progress {
+            height: 100%;
+            background: #27ae60;
+            width: 0%;
+            transition: width 0.5s;
+        }
+
+        .events {
+            margin-top: 20px;
+        }
+
+        .event {
+            padding: 10px;
+            border-left: 3px solid #3498db;
+            margin-bottom: 10px;
+            background: #f8f9fa;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 20px;
+            background: #34495e;
+            color: white;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                margin: 10px;
+            }
+            
+            .tracking-form {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📦 Suivi de Colis</h1>
+            <p>Suivez votre colis en temps réel</p>
+        </div>
+
+        <div class="tracking-form">
+            <div class="input-group">
+                <label for="tracking-number">Numéro de suivi :</label>
+                <input 
+                    type="text" 
+                    id="tracking-number" 
+                    placeholder="Exemple: 123456789ABCD"
+                    maxlength="20"
+                >
+            </div>
+
+            <button class="btn" onclick="trackPackage()">
+                🔍 Suivre mon colis
+            </button>
+
+            <div id="result" class="result">
+                <div class="tracking-info">
+                    <div class="status" id="status">En cours de traitement</div>
+                    <div class="progress-bar">
+                        <div class="progress" id="progress"></div>
+                    </div>
+                    <div class="events" id="events">
+                        <!-- Les événements de suivi apparaîtront ici -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>&copy; 2024 Votre Entreprise - Tous droits réservés</p>
+            <p>📞 Contact: 01 23 45 67 89</p>
+        </div>
+    </div>
+
+    <script>
+        function trackPackage() {
+            const trackingNumber = document.getElementById('tracking-number').value;
+            const resultDiv = document.getElementById('result');
+            const statusDiv = document.getElementById('status');
+            const progressBar = document.getElementById('progress');
+            const eventsDiv = document.getElementById('events');
+
+            if (!trackingNumber) {
+                alert('Veuillez saisir un numéro de suivi');
+                return;
+            }
+
+            // Simulation de suivi (à remplacer par de vraies données)
+            const trackingData = simulateTracking(trackingNumber);
+            
+            // Affichage des résultats
+            statusDiv.textContent = trackingData.status;
+            progressBar.style.width = trackingData.progress + '%';
+            
+            // Affichage des événements
+            eventsDiv.innerHTML = '';
+            trackingData.events.forEach(event => {
+                const eventDiv = document.createElement('div');
+                eventDiv.className = 'event';
+                eventDiv.innerHTML = `
+                    <strong>${event.date}</strong> - ${event.location}<br>
+                    ${event.description}
+                `;
+                eventsDiv.appendChild(eventDiv);
+            });
+
+            // Affichage du résultat
+            resultDiv.style.display = 'block';
+        }
+
+        function simulateTracking(trackingNumber) {
+            // Cette fonction simule le suivi - À REMPLACER par de vraies données
+            const statuses = [
+                { status: "Colis préparé", progress: 25 },
+                { status: "En cours d'acheminement", progress: 50 },
+                { status: "Arrivé au centre de tri", progress: 75 },
+                { status: "Livraison prévue aujourd'hui", progress: 90 },
+                { status: "Livré", progress: 100 }
+            ];
+
+            const randomStatus = statuses[Math.floor(Math.random() * statuses.length)];
+            
+            return {
+                status: randomStatus.status,
+                progress: randomStatus.progress,
+                events: [
+                    { date: "2024-01-15 08:30", location: "Paris", description: "Colis pris en charge" },
+                    { date: "2024-01-15 14:20", location: "Centre de tri Lyon", description: "Colis en cours de tri" },
+                    { date: "2024-01-16 09:15", location: "Lyon", description: "Colis en livraison" }
+                ]
+            };
+        }
+
+        // Entrée avec la touche Enter
+        document.getElementById('tracking-number').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                trackPackage();
+            }
+        });
+    </script>
+</body>
+</html>
